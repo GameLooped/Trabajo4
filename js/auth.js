@@ -29,14 +29,14 @@ if (formRegister) {
         const password = registerPassword.value.trim();
 
         if (!name || !email || !password) {
-            alert('Todos los campos son obligatorios');
+            window.showToast('Todos los campos son obligatorios', 'error');
             return;
         }
 
         const users = getUsers();
         
         if (users.find(u => u.email === email)) {
-            alert('Este correo ya está registrado');
+            window.showToast('Este correo ya está registrado', 'error');
             return;
         }
 
@@ -45,7 +45,7 @@ if (formRegister) {
         users.push(newUser);
         saveUsers(users);
         
-        alert('Registro exitoso. Ahora puedes iniciar sesión.');
+        window.showToast('Registro exitoso. Ahora puedes iniciar sesión.');
         formRegister.reset();
         document.dispatchEvent(new CustomEvent('auth-success-register'));
     });
@@ -66,8 +66,9 @@ if (formLogin) {
             setCurrentUser({ id: user.id, name: user.name, email: user.email });
             formLogin.reset();
             document.dispatchEvent(new CustomEvent('auth-login-success'));
+            window.showToast(`Bienvenido de nuevo, ${user.name}`);
         } else {
-            alert('Credenciales incorrectas');
+            window.showToast('Credenciales incorrectas', 'error');
         }
     });
 }

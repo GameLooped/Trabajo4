@@ -28,6 +28,44 @@ const showView = (view) => {
 if (linkToRegister) linkToRegister.addEventListener('click', (e) => { e.preventDefault(); showView(viewRegister); });
 if (linkToLogin) linkToLogin.addEventListener('click', (e) => { e.preventDefault(); showView(viewLogin); });
 
+// Funciones globales (Toast y Modal)
+window.showToast = (message, type = 'success') => {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const icon = type === 'success' ? '<i class="ph ph-check-circle" style="color: #10b981; font-size: 1.2rem;"></i>' 
+                                    : '<i class="ph ph-warning-circle" style="color: var(--error-color); font-size: 1.2rem;"></i>';
+    
+    toast.innerHTML = `${icon} <span>${message}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.3s forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+};
+
+window.showConfirmModal = (onConfirm) => {
+    const modal = document.getElementById('confirm-modal');
+    modal.classList.remove('d-none');
+    
+    const btnCancel = document.getElementById('btn-modal-cancel');
+    const btnConfirm = document.getElementById('btn-modal-confirm');
+    
+    // Remove old listeners to avoid multiple fires
+    const newCancel = btnCancel.cloneNode(true);
+    const newConfirm = btnConfirm.cloneNode(true);
+    btnCancel.parentNode.replaceChild(newCancel, btnCancel);
+    btnConfirm.parentNode.replaceChild(newConfirm, btnConfirm);
+    
+    newCancel.addEventListener('click', () => modal.classList.add('d-none'));
+    newConfirm.addEventListener('click', () => {
+        modal.classList.add('d-none');
+        onConfirm();
+    });
+};
+
 // Inicializar aplicación
 const initApp = () => {
     try {

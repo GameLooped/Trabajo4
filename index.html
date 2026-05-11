@@ -5,8 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog App - Autenticación</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
+    <div id="toast-container"></div>
+    <div id="confirm-modal" class="modal d-none">
+        <div class="modal-content">
+            <h3>¿Estás seguro?</h3>
+            <p>Esta acción no se puede deshacer.</p>
+            <div class="modal-actions">
+                <button id="btn-modal-cancel" class="btn btn-secondary">Cancelar</button>
+                <button id="btn-modal-confirm" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+    
     <div id="app">
         <!-- VISTA: LOGIN -->
         <section id="view-login" class="view">
@@ -53,17 +66,17 @@
     <!-- VISTA: DASHBOARD -->
         <section id="view-dashboard" class="view d-none">
             <header>
-                <h1>Mi Blog Personal</h1>
+                <h1><i class="ph ph-book-open-text"></i> Mi Blog Personal</h1>
                 <div class="user-controls">
                     <span id="user-greeting">Hola, Usuario</span>
-                    <button id="btn-logout" class="btn btn-secondary btn-sm">Cerrar Sesión</button>
+                    <button id="btn-logout" class="btn btn-secondary btn-sm"><i class="ph ph-sign-out"></i> Cerrar Sesión</button>
                 </div>
             </header>
             <main class="dashboard-main">
                 <section class="posts-section">
                     <div class="section-header">
-                        <h2>Mis Publicaciones</h2>
-                        <button id="btn-new-post" class="btn btn-primary btn-sm">Nueva Publicación</button>
+                        <h2><i class="ph ph-files"></i> Mis Publicaciones</h2>
+                        <button id="btn-new-post" class="btn btn-primary btn-sm"><i class="ph ph-plus-circle"></i> Nueva Publicación</button>
                     </div>
                     <div id="posts-container" class="posts-grid">
                         <!-- Las tarjetas de los posts irán aquí -->
@@ -76,9 +89,9 @@
         <section id="view-post-form" class="view d-none">
             <main class="dashboard-main" style="display: flex; justify-content: center;">
                 <div class="auth-container" style="max-width: 700px; padding: 3rem;">
-                    <header style="border-bottom: none; margin-bottom: 1rem; padding-bottom: 0;">
-                        <h1 id="post-form-title" style="font-size: 1.8rem;">Nueva Publicación</h1>
-                        <button id="btn-cancel-post" class="btn btn-secondary btn-sm">Volver</button>
+                    <header style="border-bottom: none; margin-bottom: 1rem; padding-bottom: 0; display: flex; align-items: center; justify-content: space-between;">
+                        <h1 id="post-form-title" style="font-size: 1.8rem;"><i class="ph ph-pencil-simple"></i> Nueva Publicación</h1>
+                        <button id="btn-cancel-post" class="btn btn-secondary btn-sm"><i class="ph ph-arrow-left"></i> Volver</button>
                     </header>
                     <form id="form-post">
                         <input type="hidden" id="post-id">
@@ -108,9 +121,9 @@
         <section id="view-read-post" class="view d-none">
             <main class="dashboard-main" style="display: flex; justify-content: center;">
                 <article class="post-read-container auth-container" style="max-width: 800px; padding: 4rem 3rem;">
-                    <header style="border-bottom: none; margin-bottom: 1.5rem; padding-bottom: 0;">
+                    <header style="border-bottom: none; margin-bottom: 1.5rem; padding-bottom: 0; display: flex; align-items: flex-start; justify-content: space-between;">
                         <h1 id="read-post-title" style="font-size: 2.5rem; line-height: 1.3;">Título del Post</h1>
-                        <button id="btn-back-to-dashboard" class="btn btn-secondary btn-sm">Volver al Dashboard</button>
+                        <button id="btn-back-to-dashboard" class="btn btn-secondary btn-sm"><i class="ph ph-arrow-left"></i> Volver</button>
                     </header>
                     <div class="post-meta" style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
                         <span id="read-post-date">Fecha</span> • Por <span id="read-post-author" style="color: var(--primary-color); font-weight: 600;">Autor</span>

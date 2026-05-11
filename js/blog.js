@@ -95,7 +95,7 @@ if (formPost) {
         e.preventDefault();
         
         const currentUser = JSON.parse(localStorage.getItem('blog_currentUser'));
-        if (!currentUser) return alert('Debes iniciar sesión');
+        if (!currentUser) return window.showToast('Debes iniciar sesión', 'error');
 
         const title = postTitleInput.value.trim();
         const content = postContentInput.value.trim();
@@ -103,7 +103,7 @@ if (formPost) {
         const id = postIdInput.value;
 
         if (!title || !content) {
-            return alert('Completa todos los campos');
+            return window.showToast('Completa todos los campos obligatorios', 'error');
         }
 
         const posts = getPosts();
@@ -124,6 +124,7 @@ if (formPost) {
                 title,
                 content,
                 imageUrl,
+                liked: false,
                 authorId: currentUser.id,
                 authorName: currentUser.name,
                 createdAt: new Date().toISOString(),
@@ -133,6 +134,7 @@ if (formPost) {
         }
 
         savePosts(posts);
+        window.showToast(id ? 'Publicación actualizada' : 'Publicación creada exitosamente');
         document.dispatchEvent(new CustomEvent('nav-dashboard'));
         loadPosts(); // Recargar la lista
     });
@@ -157,22 +159,27 @@ const loadPosts = () => {
         return;
     }
 
-    posts.forEach(post => {
+    posts.forEach((post, index) => {
         const date = new Date(post.createdAt).toLocaleDateString();
-        
         const imgHtml = post.imageUrl ? `<img src="${post.imageUrl}" alt="Thumbnail" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">` : '';
+        const heartClass = post.liked ? 'ph-heart-fill' : 'ph-heart';
+        const likedClass = post.liked ? 'liked' : '';
 
         const card = document.createElement('div');
-        card.className = 'post-card';
+        card.className = 'post-card stagger-item';
+        card.style.animationDelay = `${index * 0.1}s`;
         card.innerHTML = `
             ${imgHtml}
-            <h3 class="post-title">${post.title}</h3>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <h3 class="post-title">${post.title}</h3>
+                <button class="btn-like ${likedClass}" data-id="${post.id}"><i class="ph ${heartClass}"></i></button>
+            </div>
             <div class="post-date">${date}</div>
             <div class="post-excerpt">${post.content}</div>
             <div class="post-actions">
-                <button class="btn btn-secondary btn-icon btn-read" data-id="${post.id}">Leer</button>
-                <button class="btn btn-secondary btn-icon btn-edit" data-id="${post.id}">Editar</button>
-                <button class="btn btn-danger btn-icon btn-delete" data-id="${post.id}">Eliminar</button>
+                <button class="btn btn-secondary btn-icon btn-read" data-id="${post.id}"><i class="ph ph-book-open"></i> Leer</button>
+                <button class="btn btn-secondary btn-icon btn-edit" data-id="${post.id}"><i class="ph ph-pencil"></i> Editar</button>
+                <button class="btn btn-danger btn-icon btn-delete" data-id="${post.id}"><i class="ph ph-trash"></i> Eliminar</button>
             </div>
         `;
         postsContainer.appendChild(card);
@@ -185,22 +192,29 @@ const loadPosts = () => {
 const attachPostEvents = () => {
     document.querySelectorAll('.btn-read').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const id = e.target.getAttribute('data-id');
+            const id = e.currentTarget.getAttribute('data-id');
             readPost(id);
         });
     });
 
     document.querySelectorAll('.btn-edit').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const id = e.target.getAttribute('data-id');
+            const id = e.currentTarget.getAttribute('data-id');
             editPost(id);
         });
     });
 
     document.querySelectorAll('.btn-delete').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const id = e.target.getAttribute('data-id');
+            const id = e.currentTarget.getAttribute('data-id');
             deletePost(id);
+        });
+    });
+
+    document.querySelectorAll('.btn-like').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            toggleLike(id);
         });
     });
 };
@@ -255,15 +269,27 @@ const editPost = (id) => {
 
 // Eliminar Post
 const deletePost = (id) => {
-    if (!confirm('¿Estás seguro de eliminar esta publicación?')) return;
+    window.showConfirmModal(() => {
+        const currentUser = JSON.parse(localStorage.getItem('blog_currentUser'));
+        let posts = getPosts();
+        
+        posts = posts.filter(p => !(p.id === id && p.authorId === currentUser.id));
+        savePosts(posts);
+        
+        window.showToast('Publicación eliminada correctamente');
+        loadPosts();
+    });
+};
 
-    const currentUser = JSON.parse(localStorage.getItem('blog_currentUser'));
-    let posts = getPosts();
-    
-    posts = posts.filter(p => !(p.id === id && p.authorId === currentUser.id));
-    savePosts(posts);
-    
-    loadPosts();
+// Toggle Like
+const toggleLike = (id) => {
+    const posts = getPosts();
+    const index = posts.findIndex(p => p.id === id);
+    if (index !== -1) {
+        posts[index].liked = !posts[index].liked;
+        savePosts(posts);
+        loadPosts();
+    }
 };
 
 // Escuchar evento de carga de dashboard
