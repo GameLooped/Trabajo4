@@ -2,6 +2,8 @@
 const viewLogin = document.getElementById('view-login');
 const viewRegister = document.getElementById('view-register');
 const viewDashboard = document.getElementById('view-dashboard');
+const viewPostForm = document.getElementById('view-post-form');
+const viewReadPost = document.getElementById('view-read-post');
 
 const linkToRegister = document.getElementById('link-to-register');
 const linkToLogin = document.getElementById('link-to-login');
@@ -13,6 +15,8 @@ const hideAllViews = () => {
     viewLogin.classList.add('d-none');
     viewRegister.classList.add('d-none');
     viewDashboard.classList.add('d-none');
+    viewPostForm.classList.add('d-none');
+    viewReadPost.classList.add('d-none');
 };
 
 const showView = (view) => {
@@ -40,6 +44,11 @@ const initApp = () => {
 document.addEventListener('auth-success-register', () => showView(viewLogin));
 document.addEventListener('auth-login-success', initApp);
 document.addEventListener('auth-logout-success', initApp);
+
+// Blog navigation events
+document.addEventListener('nav-dashboard', () => showView(viewDashboard));
+document.addEventListener('nav-post-form', () => showView(viewPostForm));
+document.addEventListener('nav-read-post', () => showView(viewReadPost));
 
 // Ejecutar al cargar
 document.addEventListener('DOMContentLoaded', initApp);
