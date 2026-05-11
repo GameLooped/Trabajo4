@@ -1,38 +1,28 @@
-# Blog Personal con Autenticación Básica
+# Blog Personal con Autenticación
 
-Aplicación Web tipo Blog desarrollada como SPA (Single Page Application) utilizando HTML, CSS Vanilla y JavaScript Vanilla. Implementa un sistema de autenticación básico y persistencia de datos local (CRUD completo) sin necesidad de backend, utilizando `LocalStorage`.
+Este es un proyecto de aplicación web tipo Blog desarrollado con Vanilla JavaScript, HTML5 y CSS3. Permite a los usuarios registrarse, iniciar sesión y gestionar sus propias publicaciones (CRUD) con persistencia local de datos.
 
-## 🚀 Tecnologías
-- HTML5
-- CSS3 (Vanilla, variables de color, Flexbox, Grid, Animaciones)
-- JavaScript (ES6+, DOM Manipulation, LocalStorage)
+## Características Principales
 
-## 📌 Características
-- **Autenticación Básica:**
-  - Registro de nuevos usuarios.
-  - Inicio y cierre de sesión.
-  - Almacenamiento seguro de credenciales y sesión actual en LocalStorage.
-- **Blog CRUD:**
-  - Crear nuevas publicaciones (título y contenido).
-  - Listar todas las publicaciones del usuario activo.
-  - Vista de lectura detallada.
-  - Editar publicaciones existentes.
-  - Eliminar publicaciones.
-- **Diseño Responsivo:**
-  - Estilos modernos ("Dark Mode" predeterminado).
-  - Interfaz adaptable a diferentes tamaños de pantalla.
-  - Interacciones y transiciones suaves.
+*   **Autenticación Local:** Registro y login de usuarios con credenciales guardadas en `LocalStorage`.
+*   **Gestión de Publicaciones (CRUD):** Creación, lectura, edición y eliminación de posts.
+*   **Soporte de Imágenes:** Permite subir imágenes locales que son comprimidas automáticamente (vía HTML5 Canvas) para optimizar el almacenamiento.
+*   **Diseño Premium UI/UX:**
+    *   Dark Mode por defecto.
+    *   Efectos de *Glassmorphism* (desenfoque de fondo).
+    *   Notificaciones tipo *Toast* y ventanas modales personalizadas.
+    *   Animaciones fluidas y diseño responsivo.
+*   **Gestión de Estado:** Manejo dinámico del DOM sin recargar la página (SPA - Single Page Application).
 
-## ⚙️ Instalación y Uso
-1. Clona este repositorio: `git clone <tu-repositorio>`
-2. Navega a la carpeta del proyecto.
-3. Abre el archivo `index.html` en tu navegador, o utiliza una extensión como *Live Server* en VSCode.
+## Tecnologías Utilizadas
 
-## 🛠️ Flujo de Git Realizado
-Este proyecto fue versionado siguiendo mejores prácticas:
-- Commits atómicos y descriptivos.
-- Ramas separadas para características (`feature/auth`, `feature/blog`).
-- Simulación de Pull Requests mediante Merges locales a `main`.
+*   HTML5
+*   CSS3 (Variables CSS, Flexbox, Grid, Animaciones)
+*   JavaScript (ES6+, DOM Manipulation, LocalStorage, Canvas API)
+*   [Phosphor Icons](https://phosphoricons.com/) para iconografía vectorial.
 
----
-*Desarrollado para el proyecto final de Desarrollo Web.*
+## Instalación y Uso
+
+1. Clonar este repositorio.
+2. Abrir el archivo `index.html` en cualquier navegador web moderno.
+3. Registrar un usuario nuevo para acceder al Dashboard y comenzar a publicar.
