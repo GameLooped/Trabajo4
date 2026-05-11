@@ -10,7 +10,10 @@ const btnBackToDashboard = document.getElementById('btn-back-to-dashboard');
 const formPost = document.getElementById('form-post');
 const postIdInput = document.getElementById('post-id');
 const postTitleInput = document.getElementById('post-title-input');
+const postImageFile = document.getElementById('post-image-file');
 const postImageInput = document.getElementById('post-image-input');
+const imagePreviewContainer = document.getElementById('image-preview-container');
+const imagePreview = document.getElementById('image-preview');
 const postContentInput = document.getElementById('post-content-input');
 const postFormTitle = document.getElementById('post-form-title');
 
@@ -30,8 +33,47 @@ if (btnNewPost) {
         formPost.reset();
         postIdInput.value = '';
         postImageInput.value = '';
+        postImageFile.value = '';
+        imagePreviewContainer.style.display = 'none';
         postFormTitle.textContent = 'Nueva Publicación';
         document.dispatchEvent(new CustomEvent('nav-post-form'));
+    });
+}
+
+// Compresión y carga de imagen
+if (postImageFile) {
+    postImageFile.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) {
+            imagePreviewContainer.style.display = 'none';
+            postImageInput.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                // Comprimir usando Canvas para no saturar LocalStorage
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 800;
+                const scaleSize = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scaleSize;
+
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                postImageInput.value = compressedBase64;
+                
+                // Mostrar vista previa
+                imagePreview.src = compressedBase64;
+                imagePreviewContainer.style.display = 'block';
+            };
+        };
     });
 }
 
@@ -197,6 +239,15 @@ const editPost = (id) => {
     postTitleInput.value = post.title;
     postContentInput.value = post.content;
     postImageInput.value = post.imageUrl || '';
+    
+    if (post.imageUrl) {
+        imagePreview.src = post.imageUrl;
+        imagePreviewContainer.style.display = 'block';
+    } else {
+        imagePreviewContainer.style.display = 'none';
+    }
+    
+    postImageFile.value = '';
     postFormTitle.textContent = 'Editar Publicación';
 
     document.dispatchEvent(new CustomEvent('nav-post-form'));
