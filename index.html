@@ -74,12 +74,12 @@
         
         <!-- VISTA: FORMULARIO POST (Crear/Editar) -->
         <section id="view-post-form" class="view d-none">
-            <header>
-                <h1 id="post-form-title">Nueva Publicación</h1>
-                <button id="btn-cancel-post" class="btn btn-secondary btn-sm">Volver</button>
-            </header>
-            <main class="dashboard-main">
-                <div class="auth-container" style="max-width: 600px;">
+            <main class="dashboard-main" style="display: flex; justify-content: center;">
+                <div class="auth-container" style="max-width: 700px; padding: 3rem;">
+                    <header style="border-bottom: none; margin-bottom: 1rem; padding-bottom: 0;">
+                        <h1 id="post-form-title" style="font-size: 1.8rem;">Nueva Publicación</h1>
+                        <button id="btn-cancel-post" class="btn btn-secondary btn-sm">Volver</button>
+                    </header>
                     <form id="form-post">
                         <input type="hidden" id="post-id">
                         <div class="form-group">
@@ -98,14 +98,14 @@
 
         <!-- VISTA: LEER POST -->
         <section id="view-read-post" class="view d-none">
-            <header>
-                <h1 id="read-post-title">Título del Post</h1>
-                <button id="btn-back-to-dashboard" class="btn btn-secondary btn-sm">Volver al Dashboard</button>
-            </header>
-            <main class="dashboard-main">
-                <article class="post-read-container auth-container" style="max-width: 800px; padding: 3rem;">
-                    <div class="post-meta" style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
-                        <span id="read-post-date">Fecha</span> • Por <span id="read-post-author">Autor</span>
+            <main class="dashboard-main" style="display: flex; justify-content: center;">
+                <article class="post-read-container auth-container" style="max-width: 800px; padding: 4rem 3rem;">
+                    <header style="border-bottom: none; margin-bottom: 1.5rem; padding-bottom: 0;">
+                        <h1 id="read-post-title" style="font-size: 2.5rem; line-height: 1.3;">Título del Post</h1>
+                        <button id="btn-back-to-dashboard" class="btn btn-secondary btn-sm">Volver al Dashboard</button>
+                    </header>
+                    <div class="post-meta" style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+                        <span id="read-post-date">Fecha</span> • Por <span id="read-post-author" style="color: var(--primary-color); font-weight: 600;">Autor</span>
                     </div>
                     <div id="read-post-content" style="white-space: pre-line; line-height: 1.8; font-size: 1.1rem;">
                         Contenido del post...
