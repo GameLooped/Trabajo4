@@ -10,15 +10,18 @@ const btnBackToDashboard = document.getElementById('btn-back-to-dashboard');
 const formPost = document.getElementById('form-post');
 const postIdInput = document.getElementById('post-id');
 const postTitleInput = document.getElementById('post-title-input');
+const postImageInput = document.getElementById('post-image-input');
 const postContentInput = document.getElementById('post-content-input');
 const postFormTitle = document.getElementById('post-form-title');
 
 const postsContainer = document.getElementById('posts-container');
 
 // Variables de estado local para lectura
+// Variables de estado local para lectura
 const readPostTitle = document.getElementById('read-post-title');
 const readPostDate = document.getElementById('read-post-date');
 const readPostAuthor = document.getElementById('read-post-author');
+const readPostImage = document.getElementById('read-post-image');
 const readPostContent = document.getElementById('read-post-content');
 
 // Navegación
@@ -26,6 +29,7 @@ if (btnNewPost) {
     btnNewPost.addEventListener('click', () => {
         formPost.reset();
         postIdInput.value = '';
+        postImageInput.value = '';
         postFormTitle.textContent = 'Nueva Publicación';
         document.dispatchEvent(new CustomEvent('nav-post-form'));
     });
@@ -53,6 +57,7 @@ if (formPost) {
 
         const title = postTitleInput.value.trim();
         const content = postContentInput.value.trim();
+        const imageUrl = postImageInput.value.trim();
         const id = postIdInput.value;
 
         if (!title || !content) {
@@ -67,6 +72,7 @@ if (formPost) {
             if (index !== -1) {
                 posts[index].title = title;
                 posts[index].content = content;
+                posts[index].imageUrl = imageUrl;
                 posts[index].updatedAt = new Date().toISOString();
             }
         } else {
@@ -75,6 +81,7 @@ if (formPost) {
                 id: Date.now().toString(),
                 title,
                 content,
+                imageUrl,
                 authorId: currentUser.id,
                 authorName: currentUser.name,
                 createdAt: new Date().toISOString(),
@@ -111,9 +118,12 @@ const loadPosts = () => {
     posts.forEach(post => {
         const date = new Date(post.createdAt).toLocaleDateString();
         
+        const imgHtml = post.imageUrl ? `<img src="${post.imageUrl}" alt="Thumbnail" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">` : '';
+
         const card = document.createElement('div');
         card.className = 'post-card';
         card.innerHTML = `
+            ${imgHtml}
             <h3 class="post-title">${post.title}</h3>
             <div class="post-date">${date}</div>
             <div class="post-excerpt">${post.content}</div>
@@ -163,6 +173,14 @@ const readPost = (id) => {
     readPostDate.textContent = new Date(post.createdAt).toLocaleDateString();
     readPostAuthor.textContent = post.authorName;
     readPostContent.textContent = post.content;
+    
+    if (post.imageUrl) {
+        readPostImage.src = post.imageUrl;
+        readPostImage.style.display = 'block';
+    } else {
+        readPostImage.style.display = 'none';
+        readPostImage.src = '';
+    }
 
     document.dispatchEvent(new CustomEvent('nav-read-post'));
 };
@@ -178,6 +196,7 @@ const editPost = (id) => {
     postIdInput.value = post.id;
     postTitleInput.value = post.title;
     postContentInput.value = post.content;
+    postImageInput.value = post.imageUrl || '';
     postFormTitle.textContent = 'Editar Publicación';
 
     document.dispatchEvent(new CustomEvent('nav-post-form'));
