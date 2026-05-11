@@ -5,6 +5,7 @@ const saveUsers = (users) => localStorage.setItem('blog_users', JSON.stringify(u
 // Session util
 const setCurrentUser = (user) => localStorage.setItem('blog_currentUser', JSON.stringify(user));
 const getCurrentUser = () => JSON.parse(localStorage.getItem('blog_currentUser'));
+const removeCurrentUser = () => localStorage.removeItem('blog_currentUser');
 
 // Elementos del DOM
 const formRegister = document.getElementById('form-register');
@@ -15,6 +16,8 @@ const registerPassword = document.getElementById('register-password');
 const formLogin = document.getElementById('form-login');
 const loginEmail = document.getElementById('login-email');
 const loginPassword = document.getElementById('login-password');
+
+const btnLogout = document.getElementById('btn-logout');
 
 // Registro de usuarios
 if (formRegister) {
@@ -60,12 +63,19 @@ if (formLogin) {
         const user = users.find(u => u.email === email && u.password === password);
 
         if (user) {
-            // Guardar en sesión
             setCurrentUser({ id: user.id, name: user.name, email: user.email });
             formLogin.reset();
             document.dispatchEvent(new CustomEvent('auth-login-success'));
         } else {
             alert('Credenciales incorrectas');
         }
+    });
+}
+
+// Logout de usuarios
+if (btnLogout) {
+    btnLogout.addEventListener('click', () => {
+        removeCurrentUser();
+        document.dispatchEvent(new CustomEvent('auth-logout-success'));
     });
 }
