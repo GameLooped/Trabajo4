@@ -260,7 +260,6 @@ header h1 {
     color: var(--error-color);
     border: 1px solid var(--error-color);
 }
-}
 
 .form-group label {
     display: block;
