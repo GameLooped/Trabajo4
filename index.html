@@ -50,14 +50,25 @@
             </div>
         </section>
         
-        <!-- VISTA: DASHBOARD (Blog Placeholder) -->
+    <!-- VISTA: DASHBOARD -->
         <section id="view-dashboard" class="view d-none">
             <header>
                 <h1>Mi Blog Personal</h1>
-                <button id="btn-logout" class="btn btn-secondary">Cerrar Sesión</button>
+                <div class="user-controls">
+                    <span id="user-greeting">Hola, Usuario</span>
+                    <button id="btn-logout" class="btn btn-secondary btn-sm">Cerrar Sesión</button>
+                </div>
             </header>
-            <main id="blog-content">
-                <!-- Contenido del blog irá aquí -->
+            <main class="dashboard-main">
+                <section class="posts-section">
+                    <div class="section-header">
+                        <h2>Mis Publicaciones</h2>
+                        <button id="btn-new-post" class="btn btn-primary btn-sm">Nueva Publicación</button>
+                    </div>
+                    <div id="posts-container" class="posts-grid">
+                        <!-- Las tarjetas de los posts irán aquí -->
+                    </div>
+                </section>
             </main>
         </section>
     </div>
