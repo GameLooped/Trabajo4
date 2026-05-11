@@ -30,12 +30,19 @@ if (linkToLogin) linkToLogin.addEventListener('click', (e) => { e.preventDefault
 
 // Inicializar aplicación
 const initApp = () => {
-    const currentUser = JSON.parse(localStorage.getItem('blog_currentUser'));
-    if (currentUser) {
-        if (userGreeting) userGreeting.textContent = `Hola, ${currentUser.name}`;
-        showView(viewDashboard);
-        document.dispatchEvent(new CustomEvent('app-load-dashboard'));
-    } else {
+    try {
+        const currentUserStr = localStorage.getItem('blog_currentUser');
+        const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
+        
+        if (currentUser && currentUser.id) {
+            if (userGreeting) userGreeting.textContent = `Hola, ${currentUser.name}`;
+            showView(viewDashboard);
+            document.dispatchEvent(new CustomEvent('app-load-dashboard'));
+        } else {
+            showView(viewLogin);
+        }
+    } catch (e) {
+        console.error("Error inicializando app", e);
         showView(viewLogin);
     }
 };
